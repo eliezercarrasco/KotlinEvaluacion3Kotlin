@@ -1,0 +1,79 @@
+package com.example.pasteleriayy
+
+import androidx.activity.ComponentActivity
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.*
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.pasteleriayy.Pantallas.UsuarioCard
+import com.example.pasteleriayy.modelos.UsuarioModelo
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+
+@RunWith(AndroidJUnit4::class)
+class UsuarioCardTest {
+
+    @get:Rule
+    val composeTestRule = createAndroidComposeRule<ComponentActivity>()
+
+    @Test
+    fun usuarioCard_muestraDatosDelUsuario() {
+
+        val usuario = UsuarioModelo(
+            id = 5L,
+            nombre = "TestUser",
+            correo = "test@mail.com",
+            contrasena = "1234",        // ← SE AGREGA ESTA LÍNEA
+            telefono = null,
+            fotoUrl = null
+        )
+
+        composeTestRule.setContent {
+            UsuarioCard(
+                usuario = usuario,
+                onEliminar = {},
+                onEditar = {},
+                cardColor = Color.White,
+                buttonColor = Color.Black,
+                textColor = Color.Black
+            )
+        }
+
+        composeTestRule.onNodeWithText("ID: 5").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Nombre: TestUser").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Correo: test@mail.com").assertIsDisplayed()
+    }
+
+    @Test
+    fun usuarioCard_botonesEditarYEliminar_llamanCallbacks() {
+        var editarCalled = false
+        var eliminarCalled = false
+
+        val usuario = UsuarioModelo(
+            id = 7L,
+            nombre = "Usuario7",
+            correo = "u7@mail.com",
+            contrasena = "abcd",       // ← TAMBIÉN AQUÍ
+            telefono = null,
+            fotoUrl = null
+        )
+
+        composeTestRule.setContent {
+            UsuarioCard(
+                usuario = usuario,
+                onEliminar = { id -> eliminarCalled = (id == 7L) },
+                onEditar = { id -> editarCalled = (id == 7L) },
+                cardColor = Color.White,
+                buttonColor = Color.Black,
+                textColor = Color.Black
+            )
+        }
+
+        composeTestRule.onNodeWithText("Editar").performClick()
+        composeTestRule.onNodeWithText("Eliminar").performClick()
+
+        assert(editarCalled)
+        assert(eliminarCalled)
+    }
+}
