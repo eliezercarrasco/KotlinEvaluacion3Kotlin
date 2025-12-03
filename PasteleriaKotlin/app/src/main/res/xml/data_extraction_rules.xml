@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-extraction-rules>
+    <cloud-backup>
+        <!-- Incluir todas las SharedPreferences -->
+        <include domain="sharedpref" path="."/>
+        <!-- Excluir algún archivo de preferencias sensible -->
+        <exclude domain="sharedpref" path="device.xml"/>
+    </cloud-backup>
+</data-extraction-rules>

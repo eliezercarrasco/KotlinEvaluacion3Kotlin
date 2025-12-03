@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- Respaldar todas las preferencias de la app -->
+    <include domain="sharedpref" path="."/>
+    <!-- Excluir un archivo específico si fuera necesario -->
+    <exclude domain="sharedpref" path="device.xml"/>
+</full-backup-content>
