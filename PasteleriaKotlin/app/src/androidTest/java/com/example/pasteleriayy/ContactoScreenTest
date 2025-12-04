@@ -1,0 +1,48 @@
+package com.example.pasteleriayy
+
+import androidx.activity.ComponentActivity
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.*
+import androidx.navigation.testing.TestNavHostController
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.pasteleriayy.Pantallas.ContactoScreen
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+
+@RunWith(AndroidJUnit4::class)
+class ContactoScreenTest {
+
+    @get:Rule
+    val composeTestRule = createAndroidComposeRule<ComponentActivity>()
+
+    @Test
+    fun contacto_inicial_muestraFormularioYBotonEnviar() {
+        val navController = TestNavHostController(composeTestRule.activity)
+
+        composeTestRule.setContent {
+            ContactoScreen(navController = navController)
+        }
+
+        composeTestRule.onNodeWithText("Formulario de Contacto").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Enviar").assertIsDisplayed()
+    }
+
+    @Test
+    fun contacto_envioVacio_muestraErrores() {
+        val navController = TestNavHostController(composeTestRule.activity)
+
+        composeTestRule.setContent {
+            ContactoScreen(navController = navController)
+        }
+
+        composeTestRule.onNodeWithText("Enviar").performClick()
+
+        composeTestRule.onNodeWithText("El nombre no puede estar vacío").assertIsDisplayed()
+        composeTestRule.onNodeWithText("El correo no puede estar vacío").assertIsDisplayed()
+        composeTestRule.onNodeWithText("El teléfono no puede estar vacío").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Debe escribir un mensaje").assertIsDisplayed()
+    }
+
+
+}
