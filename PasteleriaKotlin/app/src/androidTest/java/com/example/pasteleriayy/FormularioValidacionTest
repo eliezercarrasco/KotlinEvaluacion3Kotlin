@@ -1,0 +1,45 @@
+package com.example.pasteleriayy
+
+import androidx.activity.ComponentActivity
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.*
+import androidx.navigation.testing.TestNavHostController
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.pasteleriayy.Pantallas.FormularioValidacion
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+
+@RunWith(AndroidJUnit4::class)
+class FormularioValidacionTest {
+
+    @get:Rule
+    val composeTestRule = createAndroidComposeRule<ComponentActivity>()
+
+    @Test
+    fun formulario_muestra_textoTomarFoto_y_botonRegistrar_presente() {
+        composeTestRule.setContent {
+            FormularioValidacion(navController = TestNavHostController(composeTestRule.activity))
+        }
+
+        // Comprueba que el texto "Tomar Foto" aparece
+        composeTestRule.onNodeWithText("Tomar Foto").assertIsDisplayed()
+        // Comprueba que el botón "Registrar Usuario" está presente
+        composeTestRule.onNodeWithText("Registrar Usuario").assertIsDisplayed()
+    }
+
+    @Test
+    fun formulario_al_clickRegistrar_camposVacios_muestranErrores() {
+        composeTestRule.setContent {
+            FormularioValidacion(navController = TestNavHostController(composeTestRule.activity))
+        }
+
+        // Pulsar el botón Registrar sin rellenar campos
+        composeTestRule.onNodeWithText("Registrar Usuario").performClick()
+
+        // Deben aparecer los mensajes de error
+        composeTestRule.onNodeWithText("Ingrese un nombre").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Ingrese un correo").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Mínimo 6 caracteres").assertIsDisplayed()
+    }
+}
